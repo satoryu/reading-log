@@ -2,7 +2,11 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import type { Book } from '../types'
 import { isISO } from '../test/utils'
 
-import { addBook, listBooks, clearBooks } from './bookRepository'
+import { addBook, listBooks, clearBooks, removeBook } from './bookRepository'
+
+const wait = (msec: number) => {
+  return new Promise((r) => setTimeout(r, msec))
+}
 
 beforeEach(() => {
   clearBooks()
@@ -34,11 +38,25 @@ describe('listBooks', () => {
 
   it('updatedAt の降順で返す', async () => {
     addBook('A')
-    await new Promise((r) => setTimeout(r, 5))
+    await wait(5)
     addBook('B')
 
     const books = listBooks()
     const titles = books.map((b) => b.title)
     expect(titles).toEqual(['B', 'A'])
+  })
+})
+
+describe('removeBook', () => {
+  it('指定したIDのBookが削除される', async () => {
+    addBook('A')
+    await wait(5)
+    const book = addBook('B')
+    await wait(5)
+    addBook('C')
+    removeBook(book.id)
+
+    const titles = listBooks().map((b) => b.title)
+    expect(titles).toEqual(['C', 'A'])
   })
 })

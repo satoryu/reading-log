@@ -29,3 +29,10 @@ export const addBook = (title: string): Book => {
 export const listBooks = (): Book[] => {
   return load<Book[]>(STORAGE_KEY, []).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 }
+
+export const removeBook = (id: BookId): void => {
+  save(
+    STORAGE_KEY,
+    listBooks().filter((b) => b.id !== id),
+  )
+}
