@@ -16,7 +16,7 @@ export const toISODateString = (date: Date): ISODateString => date.toISOString()
 export type BookStatus = 'planned' | 'reading' | 'completed'
 
 export interface Book {
-  id: string
+  id: BookId,
   title: string
   totalPages?: number
   isbn13?: string
