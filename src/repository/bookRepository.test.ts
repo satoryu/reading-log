@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import type { Book } from '../types'
+import type { Book, BookId } from '../types'
 import { isISO } from '../test/utils'
 
 import { addBook, listBooks, clearBooks, removeBook } from './bookRepository'
@@ -58,5 +58,10 @@ describe('removeBook', () => {
 
     const titles = listBooks().map((b) => b.title)
     expect(titles).toEqual(['C', 'A'])
+  })
+
+  it('存在しないIDを指定してもエラーを出さない', () => {
+    addBook('XP')
+    expect(() => removeBook('no-existence-id' as BookId)).not.toThrow()
   })
 })
